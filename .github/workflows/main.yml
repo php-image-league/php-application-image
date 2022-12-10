@@ -12,8 +12,8 @@ jobs:
 #          - "7.2"
 #          - "7.3"
 #          - "7.4"
-          - "8.0"
-          - "8.1"
+#          - "8.0"
+#          - "8.1"
           - "8.2"
         server:
          - "fpm"
@@ -51,18 +51,22 @@ jobs:
         name: Pre process Dockerfile
         run: make PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=${{ matrix.tag }} compile-base
       -
-        name: Build and push
+        name: Build docker image
+        id: build
         uses: docker/build-push-action@v3
         with:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64 #,linux/arm64
           tags: build-image
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
+        name: list images
+        run: docker images
+      -
         name: Tagging of images
-        run: make IMAGE=build-image PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=${{ matrix.tag }} tag
+        run: make IMAGE=${{steps.build.outputs.imageid}} PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=${{ matrix.tag }} tag
 
       # todo implement tests: https://github.com/siemendev/php-application-image/issues/2
