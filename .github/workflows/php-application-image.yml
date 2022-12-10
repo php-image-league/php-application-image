@@ -3,17 +3,14 @@ on:
   schedule:
     - cron: "0 2 * * *" # every day at 2am
   workflow_dispatch:
+
 jobs:
   update-cli-images:
     continue-on-error: true
     strategy:
       matrix:
         php_version:
-#          - "7.0"
-#          - "7.1"
-#          - "7.2"
-#          - "7.3"
-#          - "7.4"
+          - "7.4" # graceful, right?
           - "8.0"
           - "8.1"
           - "8.2"
@@ -41,13 +38,12 @@ jobs:
         run: make PHP_VERSION=${{ matrix.php_version }} TAG=cli compile-base
       -
         name: Build docker image
-        id: build
         uses: docker/build-push-action@v3
         with:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
-          platforms: linux/amd64,linux/arm64,linux/arm64/v8
+          platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: "phpimageleague/php-application-server:cli-${{ matrix.php_version }}"
           cache-from: type=gha
@@ -61,11 +57,7 @@ jobs:
     strategy:
       matrix:
         php_version:
-#          - "7.0"
-#          - "7.1"
-#          - "7.2"
-#          - "7.3"
-#          - "7.4"
+          - "7.4" # graceful, right?
           - "8.0"
           - "8.1"
           - "8.2"
@@ -95,13 +87,12 @@ jobs:
         run: make PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=web compile-base
       -
         name: Build docker image
-        id: build
         uses: docker/build-push-action@v3
         with:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
-          platforms: linux/amd64,linux/arm64,linux/arm64/v8
+          platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: "phpimageleague/php-application-server:web-${{ matrix.php_version }}-${{ matrix.server }},phpimageleague/php-application-server:web-${{ matrix.server }}-${{ matrix.php_version }}"
           cache-from: type=gha
@@ -145,13 +136,12 @@ jobs:
         run: make PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=web-dev compile-base
       -
         name: Build docker image
-        id: build
         uses: docker/build-push-action@v3
         with:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
-          platforms: linux/amd64,linux/arm64,linux/arm64/v8
+          platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: "phpimageleague/php-application-server:web-dev-${{ matrix.php_version }}-${{ matrix.server }},phpimageleague/php-application-server:web-dev-${{ matrix.server }}-${{ matrix.php_version }}"
           cache-from: type=gha
