@@ -3,7 +3,7 @@ LATEST_PHP7_VERSION=7.4
 DEFAULT_SERVER=fpm
 
 IMAGE_REGISTRY="phpimageleague"
-IMAGE_NAME="php-application-image"
+IMAGE_NAME="php-application-server"
 IMAGE_FULL="$(IMAGE_REGISTRY)/$(IMAGE_NAME)"
 
 define docker-tag
@@ -23,6 +23,7 @@ compile-base:
 	cd ./base && ../preprocessor "$$TAG.Dockerfile" > Dockerfile
 
 tag:
+	docker pull $(IMAGE)
 ifeq ($(SERVER),$(DEFAULT_SERVER))
 	@$(call docker-tag,$(IMAGE),"$(TAG)-$(PHP_VERSION)")
 endif
