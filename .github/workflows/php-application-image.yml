@@ -11,10 +11,10 @@ jobs:
       matrix:
         tag: ["cli", "web", "web-dev"]
         php_version: ["7.4", "8.0", "8.1", "8.2"]
-        excludes:
+        exclude:
           - tag: web-dev
             php_version: 7.4
-        includes:
+        include:
           - tag: web
             php_version: 8.2
             server: fpm
