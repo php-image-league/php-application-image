@@ -12,15 +12,15 @@ jobs:
 #          - "7.2"
 #          - "7.3"
 #          - "7.4"
-#          - "8.0"
-#          - "8.1"
+          - "8.0"
+          - "8.1"
           - "8.2"
         server:
          - "fpm"
         tag:
-#          - "cli"
+          - "cli"
           - "web"
-#          - "web-dev"
+          - "web-dev"
 #        exclude:
 #          - php_version: 7.2
 #            tag: web-dev
