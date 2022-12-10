@@ -44,10 +44,11 @@ jobs:
       -
         name: test
         run: |
-          echo ${{ matrix }}
+          echo ${{ join(matrix, '-') }}
           echo ${{ join(matrix.includes, '-') }}
           echo ${{ fromJson(toJson(matrix)) }}
           echo ${{ join(fromJson(toJson(matrix)).includes) }}
+          echo ${{ join(fromJson(toJson(matrix))) }}
           exit 1
       -
         name: Set up QEMU
