@@ -20,11 +20,15 @@ jobs:
       -
         name: combination check
         if: ${{ startsWith(github.event.inputs.php_version, '7') && github.event.inputs.tag == 'web-dev' }}
-        run: echo "web-dev needs PHP >= 8" 2>; exit 1
+        run: |
+            echo "web-dev needs PHP >= 8" 2>
+            exit 1
       -
         name: combination check
         if: ${{ github.event.inputs.server && github.event.inputs.tag == 'cli' }}
-        run: echo "'cli' can not be build with a server." 2>; exit 1
+        run: | 
+            echo "'cli' can not be build with a server." 2>
+            exit 1
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
