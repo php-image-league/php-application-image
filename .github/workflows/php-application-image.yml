@@ -41,20 +41,20 @@ jobs:
             server: fpm
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout the code
-        uses: actions/checkout@v3
-        with:
-          ref: 'main'
       -
         name: save tag name
-        run: echo "${{ matrix.tag }}-${{ matrix.php_version }}" >tag_name.txt
+        id: tag_name
+        run: echo "tag=${{ matrix.tag }}-${{ matrix.php_version }}" >> $GITHUB_OUTPUT
       -
         name: add server to tag name
+        id: tag_name_server
         if: ${{ matrix.server }}
-        run: echo "-${{ matrix.server }}" >> tag_name.txt
+        run: echo "tag=-${{ matrix.server }}" >> $GITHUB_OUTPUT
       -
         name: output tag
-        run: cat tag_name.txt && exit 1
+        run: |
+            echo "${{ steps.tag_name.outputs.tag }}${{ steps.tag_name_server.outputs.tag }}"
+            exit 1
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -67,6 +67,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Checkout the code
+        uses: actions/checkout@v3
+        with:
+          ref: 'main'
       -
         name: Pre process Dockerfile
         run: make PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} SERVER=${{ matrix.server }} compile-base
