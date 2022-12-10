@@ -30,7 +30,9 @@ endif
 ifeq ($(PHP_VERSION),$(LATEST_PHP8_VERSION))
 	@$(call docker-tag,$(IMAGE),"$(TAG)-8-$(SERVER)")
 	@$(call docker-tag,$(IMAGE),"$(TAG)-$(SERVER)-8")
+	@$(call docker-tag,$(IMAGE),"$(TAG)-$(SERVER)")
 ifeq ($(SERVER),$(DEFAULT_SERVER))
+	@$(call docker-tag,$(IMAGE),"$(TAG)")
 	@$(call docker-tag,$(IMAGE),"$(TAG)-8")
 endif
 ifeq ($(TAG),web)
