@@ -4,30 +4,19 @@ on:
     - cron: "0 2 * * *" # every day at 2am
   workflow_dispatch:
 jobs:
-  update-image:
+  update-cli-images:
     continue-on-error: true
     strategy:
       matrix:
         php_version:
+#          - "7.0"
+#          - "7.1"
 #          - "7.2"
 #          - "7.3"
 #          - "7.4"
           - "8.0"
           - "8.1"
           - "8.2"
-        server:
-         - "fpm"
-        tag:
-          - "cli"
-          - "web"
-          - "web-dev"
-#        exclude:
-#          - php_version: 7.2
-#            tag: web-dev
-#          - php_version: 7.3
-#            tag: web-dev
-#          - php_version: 7.4
-#            tag: web-dev
     runs-on: ubuntu-latest
     steps:
       -
@@ -49,7 +38,7 @@ jobs:
           ref: 'main'
       -
         name: Pre process Dockerfile
-        run: make PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=${{ matrix.tag }} compile-base
+        run: make PHP_VERSION=${{ matrix.php_version }} TAG=cli compile-base
       -
         name: Build docker image
         id: build
@@ -58,16 +47,115 @@ jobs:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
-          platforms: linux/amd64 #,linux/arm64
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: "phpimageleague/php-application-server:${{ matrix.tag }}-${{ matrix.php_version }}-${{ matrix.server }},phpimageleague/php-application-server:${{ matrix.tag }}-${{ matrix.server }}-${{ matrix.php_version }}"
+          tags: "phpimageleague/php-application-server:cli-${{ matrix.php_version }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
-        name: list images
-        run: docker images
+        name: Tagging of images
+        run: make IMAGE=phpimageleague/php-application-server:cli-${{ matrix.php_version }} PHP_VERSION=${{ matrix.php_version }} TAG=cli tag
+
+  update-web-images:
+    continue-on-error: true
+    strategy:
+      matrix:
+        php_version:
+#          - "7.0"
+#          - "7.1"
+#          - "7.2"
+#          - "7.3"
+#          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+        server:
+         - "fpm"
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Checkout the code
+        uses: actions/checkout@v3
+        with:
+          ref: 'main'
+      -
+        name: Pre process Dockerfile
+        run: make PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=web compile-base
+      -
+        name: Build docker image
+        id: build
+        uses: docker/build-push-action@v3
+        with:
+          context: base
+          file: base/Dockerfile
+          build-args: "PHP_VERSION=${{ matrix.php_version }}"
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: "phpimageleague/php-application-server:web-${{ matrix.php_version }}-${{ matrix.server }},phpimageleague/php-application-server:web-${{ matrix.server }}-${{ matrix.php_version }}"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
       -
         name: Tagging of images
-        run: make IMAGE=phpimageleague/php-application-server:${{ matrix.tag }}-${{ matrix.php_version }}-${{ matrix.server }} PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=${{ matrix.tag }} tag
+        run: make IMAGE=phpimageleague/php-application-server:web-${{ matrix.php_version }}-${{ matrix.server }} PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=web tag
 
-      # todo implement tests: https://github.com/siemendev/php-application-server/issues/2
+  update-web-dev-images:
+    continue-on-error: true
+    strategy:
+      matrix:
+        php_version:
+          # no images for 7 since xdebug only works with php > 8
+          - "8.0"
+          - "8.1"
+          - "8.2"
+        server:
+         - "fpm"
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Checkout the code
+        uses: actions/checkout@v3
+        with:
+          ref: 'main'
+      -
+        name: Pre process Dockerfile
+        run: make PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=web-dev compile-base
+      -
+        name: Build docker image
+        id: build
+        uses: docker/build-push-action@v3
+        with:
+          context: base
+          file: base/Dockerfile
+          build-args: "PHP_VERSION=${{ matrix.php_version }}"
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: "phpimageleague/php-application-server:web-dev-${{ matrix.php_version }}-${{ matrix.server }},phpimageleague/php-application-server:web-dev-${{ matrix.server }}-${{ matrix.php_version }}"
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      -
+        name: Tagging of images
+        run: make IMAGE=phpimageleague/php-application-server:web-dev-${{ matrix.php_version }}-${{ matrix.server }} PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=web-dev tag

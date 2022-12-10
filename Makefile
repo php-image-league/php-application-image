@@ -28,10 +28,16 @@ ifeq ($(SERVER),$(DEFAULT_SERVER))
 	@$(call docker-tag,$(IMAGE),"$(TAG)-$(PHP_VERSION)")
 endif
 ifeq ($(PHP_VERSION),$(LATEST_PHP8_VERSION))
+ifdef $(SERVER)
 	@$(call docker-tag,$(IMAGE),"$(TAG)-8-$(SERVER)")
 	@$(call docker-tag,$(IMAGE),"$(TAG)-$(SERVER)-8")
 	@$(call docker-tag,$(IMAGE),"$(TAG)-$(SERVER)")
+endif
 ifeq ($(SERVER),$(DEFAULT_SERVER))
+	@$(call docker-tag,$(IMAGE),"$(TAG)")
+	@$(call docker-tag,$(IMAGE),"$(TAG)-8")
+endif
+ifndef $(SERVER)
 	@$(call docker-tag,$(IMAGE),"$(TAG)")
 	@$(call docker-tag,$(IMAGE),"$(TAG)-8")
 endif
@@ -40,9 +46,14 @@ ifeq ($(TAG),web)
 endif
 endif
 ifeq ($(PHP_VERSION),$(LATEST_PHP7_VERSION))
+ifdef $(SERVER)
 	@$(call docker-tag,$(IMAGE),"$(TAG)-$(SERVER)-7")
 	@$(call docker-tag,$(IMAGE),"$(TAG)-7-$(SERVER)")
+endif
 ifeq ($(SERVER),$(DEFAULT_SERVER))
+	@$(call docker-tag,$(IMAGE),"$(TAG)-7")
+endif
+ifndef $(SERVER)
 	@$(call docker-tag,$(IMAGE),"$(TAG)-7")
 endif
 endif
