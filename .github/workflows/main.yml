@@ -60,9 +60,7 @@ jobs:
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
           platforms: linux/amd64 #,linux/arm64
           push: true
-          tags:
-            - "phpimageleague/php-application-image:${{ matrix.tag }}-${{ matrix.php_version }}-${{ matrix.server }}"
-            - "phpimageleague/php-application-image:${{ matrix.tag }}-${{ matrix.server }}-${{ matrix.php_version }}"
+          tags: "phpimageleague/php-application-image:${{ matrix.tag }}-${{ matrix.php_version }}-${{ matrix.server }},phpimageleague/php-application-image:${{ matrix.tag }}-${{ matrix.server }}-${{ matrix.php_version }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
