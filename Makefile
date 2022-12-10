@@ -23,8 +23,14 @@ compile-base:
 	cd ./base && ../preprocessor "$$TAG.Dockerfile" > Dockerfile
 
 tag:
-	docker pull $(IMAGE)
+	@docker pull $(IMAGE)
+ifdef $(SERVER)
+	@$(call docker-tag,$(IMAGE),"$(TAG)-$(PHP_VERSION)-$(SERVER)")
+endif
 ifeq ($(SERVER),$(DEFAULT_SERVER))
+	@$(call docker-tag,$(IMAGE),"$(TAG)-$(PHP_VERSION)")
+endif
+ifndef $(SERVER)
 	@$(call docker-tag,$(IMAGE),"$(TAG)-$(PHP_VERSION)")
 endif
 ifeq ($(PHP_VERSION),$(LATEST_PHP8_VERSION))
