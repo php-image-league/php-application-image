@@ -55,7 +55,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: base
-          file: Dockerfile
+          file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
           platforms: linux/amd64,linux/arm64
           tags: build-image
