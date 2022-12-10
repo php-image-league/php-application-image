@@ -5,42 +5,41 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-cli-images:
+  update-image:
     continue-on-error: true
     strategy:
       matrix:
-        includes:
-#          - tag: cli
-#            php_version: 7.4
-#          - tag: cli
-#            php_version: 8.0
-#          - tag: cli
-#            php_version: 8.1
-          - tag: cli
-            php_version: 8.2
-#          - tag: web
-#            php_version: 7.4
-#            server: fpm
-#          - tag: web
-#            php_version: 8.0
-#            server: fpm
-#          - tag: web
-#            php_version: 8.1
-#            server: fpm
-#          - tag: web
-#            php_version: 8.2
-#            server: fpm
-#          - tag: web-dev
-#            php_version: 8.0
-#            server: fpm
-#          - tag: web-dev
-#            php_version: 8.1
-#            server: fpm
+        tag: ["cli", "web", "web-dev"]
+        php_version: ["7.4", "8.0", "8.1", "8.2"]
+        excludes:
           - tag: web-dev
+            php_version: 7.4
+        includes:
+          - tag: web
             php_version: 8.2
+            server: fpm
+          - tag: web
+            php_version: 7.4
+            server: fpm
+          - tag: web
+            php_version: 8.0
+            server: fpm
+          - tag: web
+            php_version: 8.1
+            server: fpm
+          - tag: web
+            php_version: 8.2
+            server: fpm
+          - tag: web-dev
+            php_version: 8.0
+            server: fpm
+          - tag: web-dev
+            php_version: 8.1
             server: fpm
     runs-on: ubuntu-latest
     steps:
+      - name: test
+        run: echo "${{ toJSON(matrix) }}" && exit 1
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -60,7 +59,7 @@ jobs:
           ref: 'main'
       -
         name: Pre process Dockerfile
-        run: make PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} SERVER=${{ matrix.server }} compile-base
+        run: "make PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} SERVER=${{ matrix.server }} compile-base"
       -
         name: Build docker image
         uses: docker/build-push-action@v3
