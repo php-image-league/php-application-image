@@ -59,7 +59,10 @@ jobs:
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
           platforms: linux/amd64 #,linux/arm64
-          tags: build-image
+          push: true
+          tags:
+            - "phpimageleague/php-application-image:${{ matrix.tag }}-${{ matrix.php_version }}-${{ matrix.server }}"
+            - "phpimageleague/php-application-image:${{ matrix.tag }}-${{ matrix.server }}-${{ matrix.php_version }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
@@ -67,6 +70,6 @@ jobs:
         run: docker images
       -
         name: Tagging of images
-        run: make IMAGE=${{steps.build.outputs.imageid}} PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=${{ matrix.tag }} tag
+        run: make IMAGE=phpimageleague/php-application-image:${{ matrix.tag }}-${{ matrix.php_version }}-${{ matrix.server }} PHP_VERSION=${{ matrix.php_version }} SERVER=${{ matrix.server }} TAG=${{ matrix.tag }} tag
 
       # todo implement tests: https://github.com/siemendev/php-application-image/issues/2

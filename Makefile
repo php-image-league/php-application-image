@@ -22,9 +22,7 @@ build-base: compile-base
 compile-base:
 	cd ./base && ../preprocessor "$$TAG.Dockerfile" > Dockerfile
 
-tag: # call with IMAGE=<local image name>
-	@$(call docker-tag,$(IMAGE),"$(TAG)-$(PHP_VERSION)-$(SERVER)")
-	@$(call docker-tag,$(IMAGE),"$(TAG)-$(SERVER)-$(PHP_VERSION)")
+tag:
 ifeq ($(SERVER),$(DEFAULT_SERVER))
 	@$(call docker-tag,$(IMAGE),"$(TAG)-$(PHP_VERSION)")
 endif
