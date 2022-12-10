@@ -9,37 +9,38 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        tag: ["cli", "web", "web-dev"]
-        php_version: ["7.4", "8.0", "8.1", "8.2"]
-        exclude:
-          - tag: web-dev
-            php_version: 7.4
         include:
-          - tag: web
+#          - tag: cli
+#            php_version: 7.4
+#          - tag: cli
+#            php_version: 8.0
+#          - tag: cli
+#            php_version: 8.1
+          - tag: cli
             php_version: 8.2
-            server: fpm
-          - tag: web
-            php_version: 7.4
-            server: fpm
-          - tag: web
-            php_version: 8.0
-            server: fpm
-          - tag: web
-            php_version: 8.1
-            server: fpm
-          - tag: web
+#          - tag: web
+#            php_version: 7.4
+#            server: fpm
+#          - tag: web
+#            php_version: 8.0
+#            server: fpm
+#          - tag: web
+#            php_version: 8.1
+#            server: fpm
+#          - tag: web
+#            php_version: 8.2
+#            server: fpm
+#          - tag: web-dev
+#            php_version: 8.0
+#            server: fpm
+#          - tag: web-dev
+#            php_version: 8.1
+#            server: fpm
+          - tag: web-dev
             php_version: 8.2
-            server: fpm
-          - tag: web-dev
-            php_version: 8.0
-            server: fpm
-          - tag: web-dev
-            php_version: 8.1
             server: fpm
     runs-on: ubuntu-latest
     steps:
-      - name: test
-        run: echo "${{ toJSON(matrix) }}" && exit 1
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
