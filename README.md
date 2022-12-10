@@ -56,3 +56,19 @@ docker run -it --volume=/Users/john_doe/Documents/my_symfony_project:/var/www ph
 ```
 _Hint: All images in this repository are configured to have the application binaries path in the global path, which lets `console`
 be found through the $PATH, and you don't have to specify the full executable path (`/var/www/bin/console`)._
+
+## Available image tags
+
+| PHP Version       | 7.0 :name_badge:                | 7.1  :name_badge:               | 7.2 :name_badge:                | 7.3 :name_badge:                | 7.4 :name_badge:                          | 8.0_ :x:                        | 8.1 :white_check_mark:          | __8.2__ :white_check_mark:                                    |
+|:------------------|:--------------------------------|:--------------------------------|:--------------------------------|:--------------------------------|:------------------------------------------|:--------------------------------|:--------------------------------|:--------------------------------------------------------------|
+| __cli__           | cli-7.0                         | cli-7.1                         | cli-7.2                         | cli-7.3                         | cli-7.4<br/>cli-7                         | cli-8.0                         | cli-8.1                         | __cli-8.2<br/>cli-8<br/>cli__                                 |
+| __web (fpm)__     | web-7.0-fpm<br/>web-7.0         | web-7.1-fpm<br/>web-7.1         | web-7.2-fpm<br/>web-7.2         | web-7.3-fpm<br/>web-7.3         | web-7.4-fpm<br/>web-7.4<br/>web-7         | web-8.0-fpm<br/>web-8.0         | web-8.1-fpm<br/>web-8.1         | __web-8.2-fpm<br/>web-8.2<br/>web-8<br/>web<br/>latest__      |
+| __web-dev (fpm)__ | web-dev-7.0-fpm<br/>web-dev-7.1 | web-dev-7.1-fpm<br/>web-dev-7.1 | web-dev-7.2-fpm<br/>web-dev-7.2 | web-dev-7.3-fpm<br/>web-dev-7.3 | web-dev-7.4-fpm<br/>web-dev-7.4<br/>web-7 | web-dev-8.0-fpm<br/>web-dev-8.0 | web-dev-8.1-fpm<br/>web-dev-8.1 | __web-dev-8.0-fpm<br/>web-dev-8.2<br/>web-dev-8<br/>web-dev__ |
+
+:name_badge:: DO NOT USE! This release is no longer maintained. These images are not part of our scheduled image update routine. Updates are executed irregularly using the "manual" action on Github. \
+:x::	A release that is supported for critical security issues only. You can use it, but make sure to update your application to a version with full support soon. \
+:white_check_mark:: Version is in full support, all fine!
+
+__Attention:__ Since this is updated by people, make sure to double-check your version support on [the official PHP roadmap](https://www.php.net/supported-versions.php) in case we forgot to update this!
+
+
