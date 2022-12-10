@@ -47,7 +47,7 @@ jobs:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm64/v8
           push: true
           tags: "phpimageleague/php-application-server:cli-${{ matrix.php_version }}"
           cache-from: type=gha
@@ -101,7 +101,7 @@ jobs:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm64/v8
           push: true
           tags: "phpimageleague/php-application-server:web-${{ matrix.php_version }}-${{ matrix.server }},phpimageleague/php-application-server:web-${{ matrix.server }}-${{ matrix.php_version }}"
           cache-from: type=gha
@@ -151,7 +151,7 @@ jobs:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm64/v8
           push: true
           tags: "phpimageleague/php-application-server:web-dev-${{ matrix.php_version }}-${{ matrix.server }},phpimageleague/php-application-server:web-dev-${{ matrix.server }}-${{ matrix.php_version }}"
           cache-from: type=gha
