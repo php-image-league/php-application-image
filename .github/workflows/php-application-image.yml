@@ -10,32 +10,32 @@ jobs:
     strategy:
       matrix:
         includes:
-          - tag: cli
-            php_version: 7.4
-          - tag: cli
-            php_version: 8.0
-          - tag: cli
-            php_version: 8.1
-          - tag: cli
-            php_version: 8.2
-          - tag: web
-            php_version: 7.4
-            server: fpm
-          - tag: web
-            php_version: 8.0
-            server: fpm
-          - tag: web
-            php_version: 8.1
-            server: fpm
-          - tag: web
-            php_version: 8.2
-            server: fpm
-          - tag: web-dev
-            php_version: 8.0
-            server: fpm
-          - tag: web-dev
-            php_version: 8.1
-            server: fpm
+#          - tag: cli
+#            php_version: 7.4
+#          - tag: cli
+#            php_version: 8.0
+#          - tag: cli
+#            php_version: 8.1
+#          - tag: cli
+#            php_version: 8.2
+#          - tag: web
+#            php_version: 7.4
+#            server: fpm
+#          - tag: web
+#            php_version: 8.0
+#            server: fpm
+#          - tag: web
+#            php_version: 8.1
+#            server: fpm
+#          - tag: web
+#            php_version: 8.2
+#            server: fpm
+#          - tag: web-dev
+#            php_version: 8.0
+#            server: fpm
+#          - tag: web-dev
+#            php_version: 8.1
+#            server: fpm
           - tag: web-dev
             php_version: 8.2
             server: fpm
@@ -44,6 +44,8 @@ jobs:
       -
         name: test
         run: |
+          echo ${{ matrix }}
+          echo ${{ toJson(matrix) }}
           echo ${{ join(matrix.*, '-') }}
           echo ${{ join(matrix, '-') }}
           exit 1
