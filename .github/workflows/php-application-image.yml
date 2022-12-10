@@ -1,4 +1,4 @@
-name: ci
+name: php-application-image
 on:
   schedule:
     - cron: "0 2 * * *" # every day at 2am
