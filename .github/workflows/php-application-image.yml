@@ -10,8 +10,8 @@ jobs:
     strategy:
       matrix:
         includes:
-#          - tag: cli
-#            php_version: 7.4
+          - tag: cli
+            php_version: 7.4
 #          - tag: cli
 #            php_version: 8.0
 #          - tag: cli
@@ -41,15 +41,20 @@ jobs:
             server: fpm
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+        with:
+          ref: 'main'
       -
-        name: test
-        run: |
-          echo ${{ join(matrix, '-') }}
-          echo ${{ join(matrix.includes, '-') }}
-          echo ${{ fromJson(toJson(matrix)) }}
-          echo ${{ join(fromJson(toJson(matrix)).includes) }}
-          echo ${{ join(fromJson(toJson(matrix))) }}
-          exit 1
+        name: save tag name
+        run: echo "${{ matrix.tag }}-${{ matrix.php_version }}" >tag_name.txt
+      -
+        name: add server to tag name
+        if: ${{ matrix.server }}
+        run: echo "-${{ matrix.server }}" >> tag_name.txt
+      -
+        name: output tag
+        run: cat tag_name.txt && exit 1
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -62,11 +67,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Checkout the code
-        uses: actions/checkout@v3
-        with:
-          ref: 'main'
       -
         name: Pre process Dockerfile
         run: make PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} SERVER=${{ matrix.server }} compile-base
