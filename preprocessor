@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -e
+
+FILE_PATH="$1"
+MAX_RECURSION_DEPTH="${2:-999}"
+RECURSION_DEPTH="$(expr ${3:-0} + 1)"
+RECURSION_PATH="$4"
+
+VAR="$(expr ${3:-0} \* 3 || true)"
+RECURSION_INDENTATION="$(perl -XE "say ' ' x $VAR" 2> /dev/null)"
+
+if [ ! -f "$FILE_PATH" ]
+then
+  echo "File does not exist: $FILE_PATH (include path: $RECURSION_PATH)" >&2
+  exit 1
+fi
+
+if [ "$RECURSION_DEPTH" -gt "$MAX_RECURSION_DEPTH" ]
+then
+  echo "Maximum recursion depth of 999 reached, check if you got any infinite recursions in your includes!" >&2
+  exit 1
+fi
+
+if [ "$RECURSION_DEPTH" -gt 1 ]
+then
+  echo "$RECURSION_INDENTATION# >>> INCLUDE '$FILE_PATH'"
+else
+  echo "# BUILD BY PREPROCESSOR, DONT MAKE CHANGES HERE!"
+  echo ""
+fi
+
+while IFS='' read -r LINE || [ -n "${LINE}" ]; do
+  TRUNCATED_LINE=$(echo "$LINE" | sed -e 's/^[[:space:]]*//')
+
+  # ignore comments
+  if [[ "$TRUNCATED_LINE" == \#* ]]
+  then
+    continue
+  fi
+
+  # handle includes
+  if [[ "$TRUNCATED_LINE" == INCLUDE* ]]
+  then
+    "$0" "$(eval echo "$LINE" | cut -c 9-)" "$MAX_RECURSION_DEPTH" "$RECURSION_DEPTH" "$RECURSION_PATH->$FILE_PATH"
+    continue
+  fi
+
+  echo "$RECURSION_INDENTATION$LINE"
+
+done < "$FILE_PATH"
+
+if [ "$RECURSION_DEPTH" -gt 1 ]
+then
+  echo "$RECURSION_INDENTATION# <<< INCLUDE '$FILE_PATH'"
+fi

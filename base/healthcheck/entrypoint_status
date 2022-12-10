@@ -1,0 +1,18 @@
+#!/bin/bash
+
+THRESHOLD=${HEALTHCHECK_TIMEOUT:-300};
+
+echo "Wait for container to be ready (current state: provisioning)...";
+COUNTER=0;
+until [ -e /var/run/nginx.pid ]
+do
+  (( COUNTER++));
+  if (( COUNTER > THRESHOLD )); then
+    printf "\nError: nginx did not start within threshold of 5 minutes, abort waiting.\n";
+    exit 1;
+  fi;
+  sleep 1;
+done;
+
+printf " nginx ready.\n";
+exit 0;

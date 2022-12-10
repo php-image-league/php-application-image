@@ -1,0 +1,7 @@
+#!/bin/bash
+for f in "$PROVISIONERS_DIR/*.sh"
+do
+  bash "$f" -H || break
+done
+
+supervisord -c "$SUPERVISORD_CONFIG"
