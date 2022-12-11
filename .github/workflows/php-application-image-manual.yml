@@ -54,7 +54,7 @@ jobs:
           context: base
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ github.event.inputs.php_version }}"
-          platforms: linux/amd64,linux/arm64,linux/arm64/v7
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: "phpimageleague/php-application-server:${{ github.run_id }}"
           cache-from: type=gha
