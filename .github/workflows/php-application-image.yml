@@ -34,6 +34,15 @@ jobs:
           - tag: fpm
             php_version: 8.2
             arches: linux/amd64,linux/arm64
+          - tag: swoole
+            php_version: 8.0
+            arches: linux/amd64,linux/arm64
+          - tag: swoole
+            php_version: 8.1
+            arches: linux/amd64,linux/arm64
+          - tag: swoole
+            php_version: 8.2
+            arches: linux/amd64,linux/arm64
           - tag: dev
             php_version: 8.0
             arches: linux/amd64,linux/arm64

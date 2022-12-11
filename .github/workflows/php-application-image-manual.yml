@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag ("cli", "fpm", "dev")'
+        description: 'Tag ("cli", "fpm", "swoole", "dev")'
         required: true
         default: 'cli'
       php_version:
