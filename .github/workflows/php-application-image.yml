@@ -90,13 +90,11 @@ jobs:
         env:
           PHP_VERSION: ${{ matrix.php_version }}
           BASE: ${{ matrix.base }}
-        run: cd ./base && ../preprocessor "$BASE.Dockerfile" > Dockerfile && cd ..
+        run: ./preprocessor "$BASE.Dockerfile" > Dockerfile
       -
         name: Build docker image
         uses: docker/build-push-action@v3
         with:
-          context: base
-          file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
           platforms: ${{ matrix.arches }}
           tags: ${{ matrix.tags }}
