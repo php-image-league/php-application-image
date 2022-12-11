@@ -1,4 +1,4 @@
-INCLUDE php/$SERVER/Dockerfile
+INCLUDE php/fpm/Dockerfile
 
 INCLUDE setup/env.Dockerfile
 
