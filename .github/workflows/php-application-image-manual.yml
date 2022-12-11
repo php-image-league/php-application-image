@@ -1,4 +1,4 @@
-name: PHP Application Image (manual)
+name: PHP Application Image (single)
 on:
   workflow_dispatch:
     inputs:
@@ -59,3 +59,6 @@ jobs:
           tags: "phpimageleague/php-application-server:${{ github.run_id }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      -
+        name: Tagging of images
+        run: make IMAGE=phpimageleague/php-application-server:${{ github.run_id }} PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} SERVER=${{ matrix.server }} tag
