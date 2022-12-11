@@ -1,2 +1,2 @@
 compile:
-	../preprocessor "$$DOCKERFILE" > Dockerfile
+	./preprocessor "$$DOCKERFILE" > Dockerfile
