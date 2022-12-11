@@ -2,7 +2,7 @@ name: PHP Application Image (single)
 on:
   workflow_dispatch:
     inputs:
-      tag:
+      base:
         description: 'Tag ("cli", "fpm", "swoole", "dev")'
         required: true
         default: 'cli'
@@ -10,6 +10,10 @@ on:
         description: 'PHP Version'
         required: true
         default: '7.0'
+      tags:
+        description: 'Tags'
+        required: true
+        default: 'phpimageleague/php-application-server:cli-7.0'
       architectures:
         description: 'Image architectures, comma separated'
         default: 'linux/amd64,linux/arm64'
@@ -18,8 +22,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: combination check
-        if: ${{ startsWith(github.event.inputs.php_version, '7') && github.event.inputs.tag == 'dev' }}
+        name: dev requirements check
+        if: ${{ startsWith(github.event.inputs.php_version, '7') && github.event.inputs.base == 'dev' }}
+        run: |
+            echo "dev needs PHP >= 8" 2>
+            exit 1
+      -
+        name: swoole requirements check
+        if: ${{ startsWith(github.event.inputs.php_version, '7') && github.event.inputs.base == 'swoole' }}
         run: |
             echo "dev needs PHP >= 8" 2>
             exit 1
@@ -40,9 +50,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: 'main'
-      - name: Pre process Dockerfile
-        run: "make PHP_VERSION=${{ github.event.inputs.php_version }} TAG=${{ github.event.inputs.tag }} compile-base"
-      - name: Build docker image
+      -
+        name: Pre process Dockerfile
+        env:
+          PHP_VERSION: ${{ github.event.inputs.php_version }}
+          BASE: ${{ github.event.inputs.base }}
+        run: cd ./base && ../preprocessor "$BASE.Dockerfile" > Dockerfile && cd ..
+      -
+        name: Build docker image
         uses: docker/build-push-action@v3
         with:
           context: base
@@ -50,9 +65,6 @@ jobs:
           build-args: "PHP_VERSION=${{ github.event.inputs.php_version }}"
           platforms: ${{ github.event.inputs.architectures }}
           push: true
-          tags: "phpimageleague/php-application-server:build${{ github.run_id }}"
+          tags: "${{ github.event.inputs.tags }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      -
-        name: Tagging of images
-        run: make IMAGE=phpimageleague/php-application-server:build${{ github.run_id }} PHP_VERSION=${{ github.event.inputs.php_version }} TAG=${{ github.event.inputs.tag }} tag

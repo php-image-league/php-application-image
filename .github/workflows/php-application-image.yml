@@ -10,48 +10,62 @@ jobs:
     strategy:
       matrix:
         include:
-          - tag: cli
+          - base: cli
             php_version: 7.4
             arches: linux/amd64,linux/arm64
-          - tag: cli
+            tags: 'phpimageleague/php-application-server:cli-7.4,phpimageleague/php-application-server:cli-7'
+          - base: cli
             php_version: 8.0
             arches: linux/amd64,linux/arm64
-          - tag: cli
+            tags: 'phpimageleague/php-application-server:cli-8.0'
+          - base: cli
             php_version: 8.1
             arches: linux/amd64,linux/arm64
-          - tag: cli
+            tags: 'phpimageleague/php-application-server:cli-8.1'
+          - base: cli
             php_version: 8.2
             arches: linux/amd64,linux/arm64
-          - tag: fpm
+            tags: 'phpimageleague/php-application-server:cli-8.2,phpimageleague/php-application-server:cli-8,phpimageleague/php-application-server:cli'
+          - base: fpm
             php_version: 7.4
             arches: linux/amd64,linux/arm64
-          - tag: fpm
+            tags: 'phpimageleague/php-application-server:fpm-7.4,phpimageleague/php-application-server:web-7.4'
+          - base: fpm
             php_version: 8.0
             arches: linux/amd64,linux/arm64
-          - tag: fpm
+            tags: 'phpimageleague/php-application-server:fpm-8.0,phpimageleague/php-application-server:web-8.0'
+          - base: fpm
             php_version: 8.1
             arches: linux/amd64,linux/arm64
-          - tag: fpm
+            tags: 'phpimageleague/php-application-server:fpm-8.1,phpimageleague/php-application-server:web-8.1'
+          - base: fpm
             php_version: 8.2
             arches: linux/amd64,linux/arm64
-          - tag: swoole
+            tags: 'phpimageleague/php-application-server:fpm-8.2,phpimageleague/php-application-server:web-8.2,phpimageleague/php-application-server:fpm-8,phpimageleague/php-application-server:web-8,phpimageleague/php-application-server:fpm,phpimageleague/php-application-server:web,phpimageleague/php-application-server:latest'
+          - base: swoole
             php_version: 8.0
             arches: linux/amd64,linux/arm64
-          - tag: swoole
+            tags: 'phpimageleague/php-application-server:swoole-8.0'
+          - base: swoole
             php_version: 8.1
             arches: linux/amd64,linux/arm64
-          - tag: swoole
+            tags: 'phpimageleague/php-application-server:swoole-8.0'
+          - base: swoole
             php_version: 8.2
             arches: linux/amd64,linux/arm64
-          - tag: dev
+            tags: 'phpimageleague/php-application-server:swoole-8.2,phpimageleague/php-application-server:swoole-8,phpimageleague/php-application-server:swoole'
+          - base: dev
             php_version: 8.0
             arches: linux/amd64,linux/arm64
-          - tag: dev
+            tags: 'phpimageleague/php-application-server:dev-8.0'
+          - base: dev
             php_version: 8.1
             arches: linux/amd64,linux/arm64
-          - tag: dev
+            tags: 'phpimageleague/php-application-server:dev-8.1'
+          - base: dev
             php_version: 8.2
             arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:dev-8.2,phpimageleague/php-application-server:dev-8,phpimageleague/php-application-server:dev'
     runs-on: ubuntu-latest
     steps:
       -
@@ -73,7 +87,10 @@ jobs:
           ref: 'main'
       -
         name: Pre process Dockerfile
-        run: "make PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} compile-base"
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
+          BASE: ${{ matrix.base }}
+        run: cd ./base && ../preprocessor "$BASE.Dockerfile" > Dockerfile && cd ..
       -
         name: Build docker image
         uses: docker/build-push-action@v3
@@ -82,10 +99,7 @@ jobs:
           file: base/Dockerfile
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
           platforms: ${{ matrix.arches }}
+          tags: ${{ matrix.tags }}
           push: true
-          tags: "phpimageleague/php-application-server:build${{ github.run_id }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      -
-        name: Tagging of images
-        run: make IMAGE=phpimageleague/php-application-server:build${{ github.run_id }} PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} tag
