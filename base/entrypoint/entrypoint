@@ -7,7 +7,7 @@ touch /provisioning
 # start all services, but keep them in background
 supervisord -c "$SUPERVISORD_CONFIG" &
 
-for f in "$PROVISIONERS_DIR/*.sh"
+for f in $PROVISIONERS_DIR/*.sh
 do
   bash "$f" -H || break
 done
