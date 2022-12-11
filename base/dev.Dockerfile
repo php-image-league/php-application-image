@@ -3,7 +3,7 @@ INCLUDE fpm.Dockerfile
 INCLUDE nginx/as-root.Dockerfile
 INCLUDE php/fpm/as-root.Dockerfile
 
-INCLUDE php/extensions/xdebug.Dockerfile
+INCLUDE php/xdebug/Dockerfile
 
 RUN apt-get -yqq update && apt-get -yqq install wget vim && rm -rf /var/lib/apt/lists/*
 
