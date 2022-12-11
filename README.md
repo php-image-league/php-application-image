@@ -1,28 +1,28 @@
-# Another dockerized symfony image!
-This time an all-in-one container for developing, testing and deploying symfony projects.
-This image contains all services that are needed for a deployed symfony application to run but no database and other
+# Another php image!
+This time an all-in-one container for developing, testing and deploying php projects.
+This image contains all services that are needed for a deployed php application to run, but no database and other
 external services, **specifically designed for production use!**
   
 **The Idea**  
-Inspired by the way java frameworks like spring boot handle their build artifacts in a single executable that is runable
-without any more configuration, I have implemented this image to provide a kind of equal solution for symfony(/php) projects.
+Inspired by the way java frameworks like spring boot handle their build artifacts in a single executable that is executable
+without any more configuration, we implemented this image to provide a kind of similar solution for php projects.
 The goal is simple: A ci build should end with a single binary to execute that just works when I spin it up.
 
 ## How to use
-All source code has to be located inside `/var/www`. For local development you usually use the `latest-dev` tag and
+All source code has to be located inside `/var/www`. For local development you usually use the `dev` tag and
 mount a local project directory to this directory, when you build up a production image you usually copy the source code
-of the current version into that directory and use the `latest` image tag.
+of the current version into that directory and use the `web` (`latest`) image tag.
 
 ## Quick start
-As developers, we strive for performance and a steep learning curve, I got that. So how about a single-line example to
-set up an example container for you so you can test it? I'm assuming you use `/Users/john_doe/Documents/my_symfony_project`
-as a project root directory, but you can change that if it does not fit your needs (spoiler alert: you probably have to).
+As developers, we strive for performance and a steep learning curve, we got that. So how about a single-line example to
+set up an example container for you so you can test it?
+Lets assume you have a symfony project located at the current directory:
 ```shell script
-docker run -it -p 8080:80 --volume=/Users/john_doe/Documents/my_symfony_project:/var/www phpimageleague/php-application-server:dev
+docker run -it -p 8080:80 -v $(pwd):/var/www phpimageleague/php-application-server:dev
 ```
 After the container provisioned itself it should start nginx & php and you can access http://localhost:8080 to view your
-application. If you're curious to view it in production environment, try removing `-dev` from the tag to use the
-`latest` image tag.
+application. If you're curious to view it in production environment, try using the `fpm` or `latest` tag to use the
+production-ready image.
 
 ## Container provisioning
 Since we do not want any configuration after the container has been build and started, the image has to be configured to
@@ -33,9 +33,11 @@ a new container from that image or a existing container that has just been stopp
 in your custom provisioner scripts are able to handle this (for example: don't drop the database and create a new one in a
 provisioner script).
   
-Currently, we provide basic provisioner scripts that run composer install and database migrations. Feel free to add
-custom scripts or delete/update the ones that are provided in the image. After all provisioner scripts are ran, the
-symfony cache will be warmed up and all other services (nginx, php) are started.
+Currently, we provide basic provisioner scripts that just run composer install. For symfony projects e.g. you would need
+database migrations, cache clears, etc. Feel free to add custom scripts or delete/update the ones that are provided in
+the image.
+**Warning:** The provisioners are executed 
+After all provisioner scripts are executed, all other services (nginx, php) are started.
 
 ## Continuous Integration
 Our custom docker image entrypoint is automatically called when the container starts... which is great, right?
