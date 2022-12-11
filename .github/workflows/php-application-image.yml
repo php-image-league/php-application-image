@@ -74,9 +74,9 @@ jobs:
           build-args: "PHP_VERSION=${{ matrix.php_version }}"
           platforms: ${{ matrix.arches }}
           push: true
-          tags: "phpimageleague/php-application-server:${{ github.run_id }}"
+          tags: "phpimageleague/php-application-server:build${{ github.run_id }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
       -
         name: Tagging of images
-        run: make IMAGE=phpimageleague/php-application-server:${{ github.run_id }} PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} tag
+        run: make IMAGE=phpimageleague/php-application-server:build${{ github.run_id }} PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} tag
