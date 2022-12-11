@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ -f "/provisioning" ]
+then
+  echo "Container is still provisioning itself." 2>
+  exit 1
+fi
+if [ ! -f /var/run/nginx.pid ]
+then
+  echo "nginx is not running." 2>
+  exit 2
+fi
+if [ ! -f /var/run/supervisord.pid ]
+then
+  echo "supervisor is not running." 2>
+  exit 2
+fi

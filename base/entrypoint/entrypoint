@@ -1,7 +1,17 @@
 #!/bin/bash
+
+set -m # enable background processes
+
+touch /provisioning
+
+# start all services, but keep them in background
+supervisord -c "$SUPERVISORD_CONFIG" &
+
 for f in "$PROVISIONERS_DIR/*.sh"
 do
   bash "$f" -H || break
 done
 
-supervisord -c "$SUPERVISORD_CONFIG"
+rm /provisioning
+
+fg %1
