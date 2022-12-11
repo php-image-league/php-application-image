@@ -18,7 +18,7 @@ As developers, we strive for performance and a steep learning curve, I got that.
 set up an example container for you so you can test it? I'm assuming you use `/Users/john_doe/Documents/my_symfony_project`
 as a project root directory, but you can change that if it does not fit your needs (spoiler alert: you probably have to).
 ```shell script
-docker run -it -p 8080:80 --volume=/Users/john_doe/Documents/my_symfony_project:/var/www patricksiemen/php-nginx-symfony:latest-dev
+docker run -it -p 8080:80 --volume=/Users/john_doe/Documents/my_symfony_project:/var/www phpimageleague/php-application-server:dev
 ```
 After the container provisioned itself it should start nginx & php and you can access http://localhost:8080 to view your
 application. If you're curious to view it in production environment, try removing `-dev` from the tag to use the
@@ -52,18 +52,17 @@ on the same container or (in case you orchestrate a fleet of containers) even th
 up a php-fpm as well as a nginx just for executing a single command is a very bad example, so let's use the cli image for
 that. The CLI image does not start any services but provides us a single php executable, so it's up in no time:
 ```shell script
-docker run -it --volume=/Users/john_doe/Documents/my_symfony_project:/var/www phpimageleague/php-aplication-server:cli-latest php -v
+docker run -it --volume=/Users/john_doe/Documents/my_symfony_project:/var/www phpimageleague/php-aplication-server:cli php -v
 ```
-_Hint: All images in this repository are configured to have the application binaries path in the global path, which lets `console`
-be found through the $PATH, and you don't have to specify the full executable path (`/var/www/bin/console`)._
+
 
 ## Available image tags
 
-| PHP Version       | 7.0 :name_badge:                | 7.1  :name_badge:               | 7.2 :name_badge:                | 7.3 :name_badge:                | 7.4 :name_badge:                          | 8.0_ :x:                        | 8.1 :white_check_mark:          | __8.2__ :white_check_mark:                                    |
-|:------------------|:--------------------------------|:--------------------------------|:--------------------------------|:--------------------------------|:------------------------------------------|:--------------------------------|:--------------------------------|:--------------------------------------------------------------|
-| __cli__           | cli-7.0                         | cli-7.1                         | cli-7.2                         | cli-7.3                         | cli-7.4<br/>cli-7                         | cli-8.0                         | cli-8.1                         | __cli-8.2<br/>cli-8<br/>cli__                                 |
-| __web (fpm)__     | web-7.0-fpm<br/>web-7.0         | web-7.1-fpm<br/>web-7.1         | web-7.2-fpm<br/>web-7.2         | web-7.3-fpm<br/>web-7.3         | web-7.4-fpm<br/>web-7.4<br/>web-7         | web-8.0-fpm<br/>web-8.0         | web-8.1-fpm<br/>web-8.1         | __web-8.2-fpm<br/>web-8.2<br/>web-8<br/>web<br/>latest__      |
-| __web-dev (fpm)__ | web-dev-7.0-fpm<br/>web-dev-7.1 | web-dev-7.1-fpm<br/>web-dev-7.1 | web-dev-7.2-fpm<br/>web-dev-7.2 | web-dev-7.3-fpm<br/>web-dev-7.3 | web-dev-7.4-fpm<br/>web-dev-7.4<br/>web-7 | web-dev-8.0-fpm<br/>web-dev-8.0 | web-dev-8.1-fpm<br/>web-dev-8.1 | __web-dev-8.0-fpm<br/>web-dev-8.2<br/>web-dev-8<br/>web-dev__ |
+| PHP Version | 7.0 :name_badge: | 7.1  :name_badge: | 7.2 :name_badge: | 7.3 :name_badge: | 7.4 :name_badge:  | 8.0_ :x: | 8.1 :white_check_mark: | __8.2__ :white_check_mark:               |
+|:------------|:-----------------|:------------------|:-----------------|:-----------------|:------------------|:---------|:-----------------------|:-----------------------------------------|
+| __cli__     | cli-7.0          | cli-7.1           | cli-7.2          | cli-7.3          | cli-7.4<br/>cli-7 | cli-8.0  | cli-8.1                | __cli-8.2<br/>cli-8<br/>cli__            |
+| __fpm__     | fpm-7.0          | fpm-7.1           | fpm-7.2          | fpm-7.3          | fpm-7.4<br/>fpm-7 | fpm-8.0  | fpm-8.1                | __fpm-8.2<br/>fpm-8<br/>fpm<br/>latest__ |
+| __dev__     | dev-7.1          | dev-7.1           | dev-7.2          | dev-7.3          | dev-7.4<br/>dev-7 | dev-8.0  | dev-8.1                | __dev-8.2<br/>dev-8<br/>dev__            |
 
 :name_badge:: DO NOT USE! This release is no longer maintained. These images are not part of our scheduled image update routine. Updates are executed irregularly using the "manual" action on Github. \
 :x::	A release that is supported for critical security issues only. You can use it, but make sure to update your application to a version with full support soon. \

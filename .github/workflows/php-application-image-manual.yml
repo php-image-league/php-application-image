@@ -3,16 +3,13 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag ("cli", "web", "web-dev")'
+        description: 'Tag ("cli", "fpm", "dev")'
         required: true
         default: 'cli'
       php_version:
         description: 'PHP Version'
         required: true
         default: '7.0'
-      server:
-        description: 'Server ("fpm", leave empty when building the cli image).'
-        default: ''
       architectures:
         description: 'Image architectures, comma separated'
         default: 'linux/amd64,linux/arm64'
@@ -22,15 +19,9 @@ jobs:
     steps:
       -
         name: combination check
-        if: ${{ startsWith(github.event.inputs.php_version, '7') && github.event.inputs.tag == 'web-dev' }}
+        if: ${{ startsWith(github.event.inputs.php_version, '7') && github.event.inputs.tag == 'dev' }}
         run: |
-            echo "web-dev needs PHP >= 8" 2>
-            exit 1
-      -
-        name: combination check
-        if: ${{ github.event.inputs.server && github.event.inputs.tag == 'cli' }}
-        run: | 
-            echo "'cli' can not be build with a server." 2>
+            echo "dev needs PHP >= 8" 2>
             exit 1
       -
         name: Set up QEMU
@@ -50,7 +41,7 @@ jobs:
         with:
           ref: 'main'
       - name: Pre process Dockerfile
-        run: "make PHP_VERSION=${{ github.event.inputs.php_version }} TAG=${{ github.event.inputs.tag }} SERVER=${{ github.event.inputs.server }} compile-base"
+        run: "make PHP_VERSION=${{ github.event.inputs.php_version }} TAG=${{ github.event.inputs.tag }} compile-base"
       - name: Build docker image
         uses: docker/build-push-action@v3
         with:
@@ -64,4 +55,4 @@ jobs:
           cache-to: type=gha,mode=max
       -
         name: Tagging of images
-        run: make IMAGE=phpimageleague/php-application-server:${{ github.run_id }} PHP_VERSION=${{ github.event.inputs.php_version }} TAG=${{ github.event.inputs.tag }} SERVER=${{ github.event.inputs.server }} tag
+        run: make IMAGE=phpimageleague/php-application-server:${{ github.run_id }} PHP_VERSION=${{ github.event.inputs.php_version }} TAG=${{ github.event.inputs.tag }} tag

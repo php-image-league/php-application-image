@@ -22,34 +22,27 @@ jobs:
           - tag: cli
             php_version: 8.2
             arches: linux/amd64,linux/arm64
-          - tag: web
+          - tag: fpm
             php_version: 7.4
             arches: linux/amd64,linux/arm64
-            server: fpm
-          - tag: web
+          - tag: fpm
             php_version: 8.0
             arches: linux/amd64,linux/arm64
-            server: fpm
-          - tag: web
+          - tag: fpm
             php_version: 8.1
             arches: linux/amd64,linux/arm64
-            server: fpm
-          - tag: web
+          - tag: fpm
             php_version: 8.2
             arches: linux/amd64,linux/arm64
-            server: fpm
-          - tag: web-dev
+          - tag: dev
             php_version: 8.0
             arches: linux/amd64,linux/arm64
-            server: fpm
-          - tag: web-dev
+          - tag: dev
             php_version: 8.1
             arches: linux/amd64,linux/arm64
-            server: fpm
-          - tag: web-dev
+          - tag: dev
             php_version: 8.2
             arches: linux/amd64,linux/arm64
-            server: fpm
     runs-on: ubuntu-latest
     steps:
       -
@@ -71,7 +64,7 @@ jobs:
           ref: 'main'
       -
         name: Pre process Dockerfile
-        run: "make PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} SERVER=${{ matrix.server }} compile-base"
+        run: "make PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} compile-base"
       -
         name: Build docker image
         uses: docker/build-push-action@v3
@@ -86,4 +79,4 @@ jobs:
           cache-to: type=gha,mode=max
       -
         name: Tagging of images
-        run: make IMAGE=phpimageleague/php-application-server:${{ github.run_id }} PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} SERVER=${{ matrix.server }} tag
+        run: make IMAGE=phpimageleague/php-application-server:${{ github.run_id }} PHP_VERSION=${{ matrix.php_version }} TAG=${{ matrix.tag }} tag

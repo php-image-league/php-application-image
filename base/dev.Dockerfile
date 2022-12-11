@@ -1,4 +1,4 @@
-INCLUDE web.Dockerfile
+INCLUDE fpm.Dockerfile
 
 INCLUDE nginx/as-root.Dockerfile
 INCLUDE php/fpm/as-root.Dockerfile
