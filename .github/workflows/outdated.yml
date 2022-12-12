@@ -89,5 +89,6 @@ jobs:
           platforms: ${{ matrix.arches }}
           tags: ${{ matrix.tags }}
           push: true
+          pull: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
