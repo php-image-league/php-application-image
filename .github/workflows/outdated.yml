@@ -11,47 +11,47 @@ jobs:
       matrix:
         include:
           - base: cli
-            php_version: 7.0
+            php_version: "7.0"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-7.0'
           - base: cli
-            php_version: 7.1
+            php_version: "7.1"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-7.1'
           - base: cli
-            php_version: 7.2
+            php_version: "7.2"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-7.2'
           - base: cli
-            php_version: 7.3
+            php_version: "7.3"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-7.3'
           - base: cli
-            php_version: 7.4
+            php_version: "7.4"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-7.4,phpimageleague/php-application-server:cli-7'
           - base: fpm
-            php_version: 7.0
+            php_version: "7.0"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-7.0,phpimageleague/php-application-server:web-7.0'
           - base: fpm
-            php_version: 7.1
+            php_version: "7.1"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-7.1,phpimageleague/php-application-server:web-7.1'
           - base: fpm
-            php_version: 7.2
+            php_version: "7.2"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-7.2,phpimageleague/php-application-server:web-7.2'
           - base: fpm
-            php_version: 7.3
+            php_version: "7.3"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-7.3,phpimageleague/php-application-server:web-7.3'
           - base: fpm
-            php_version: 7.4
+            php_version: "7.4"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-7.4,phpimageleague/php-application-server:web-7.4,phpimageleague/php-application-server:fpm-7,phpimageleague/php-application-server:web-7'
           - base: swoole
-            php_version: 7.4
+            php_version: "7.4"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:swoole-7.4,phpimageleague/php-application-server:swoole-7.4,phpimageleague/php-application-server:swoole-7,phpimageleague/php-application-server:swoole-7'
           # todo build dev tag with older version of xdebug (xdebug currently requires php >= 8)

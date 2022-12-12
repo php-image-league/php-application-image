@@ -11,51 +11,51 @@ jobs:
       matrix:
         include:
           - base: cli
-            php_version: 8.0
+            php_version: "8.0"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-8.0'
           - base: cli
-            php_version: 8.1
+            php_version: "8.1"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-8.1'
           - base: cli
-            php_version: 8.2
+            php_version: "8.2"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-8.2,phpimageleague/php-application-server:cli-8,phpimageleague/php-application-server:cli'
           - base: fpm
-            php_version: 8.0
+            php_version: "8.0"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-8.0,phpimageleague/php-application-server:web-8.0'
           - base: fpm
-            php_version: 8.1
+            php_version: "8.1"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-8.1,phpimageleague/php-application-server:web-8.1'
           - base: fpm
-            php_version: 8.2
+            php_version: "8.2"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-8.2,phpimageleague/php-application-server:web-8.2,phpimageleague/php-application-server:fpm-8,phpimageleague/php-application-server:web-8,phpimageleague/php-application-server:fpm,phpimageleague/php-application-server:web,phpimageleague/php-application-server:latest'
           - base: swoole
-            php_version: 8.0
+            php_version: "8.0"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:swoole-8.0'
           - base: swoole
-            php_version: 8.1
+            php_version: "8.1"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:swoole-8.0'
           - base: swoole
-            php_version: 8.2
+            php_version: "8.2"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:swoole-8.2,phpimageleague/php-application-server:swoole-8,phpimageleague/php-application-server:swoole'
           - base: fpm-dev
-            php_version: 8.0
+            php_version: "8.0"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-dev-8.0,phpimageleague/php-application-server:dev-8.0'
           - base: fpm-dev
-            php_version: 8.1
+            php_version: "8.1"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-dev-8.1,phpimageleague/php-application-server:dev-8.1'
           - base: fpm-dev
-            php_version: 8.2
+            php_version: "8.2"
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:fpm-dev-8.2,phpimageleague/php-application-server:dev-8.2,phpimageleague/php-application-server:fpm-dev-8,phpimageleague/php-application-server:dev-8,phpimageleague/php-application-server:fpm-dev,phpimageleague/php-application-server:dev'
     runs-on: ubuntu-latest
