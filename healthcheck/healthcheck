@@ -2,16 +2,16 @@
 
 if [ -f "/provisioning" ]
 then
-  echo "Container is still provisioning itself." 2>
+  echo "Container is still provisioning itself."
   exit 1
 fi
 if [ ! -f /var/run/nginx.pid ]
 then
-  echo "nginx is not running." 2>
+  echo "nginx is not running."
   exit 2
 fi
 if [ ! -f /var/run/supervisord.pid ]
 then
-  echo "supervisor is not running." 2>
+  echo "supervisor is not running."
   exit 2
 fi

@@ -2,19 +2,19 @@
 
 THRESHOLD=${HEALTHCHECK_TIMEOUT:-300};
 
-echo "Wait for container to be ready (current state: provisioning)...";
 COUNTER=0;
-until [ $($GLOBAL_BINARIES/healthcheck) ]
+until [ healthcheck ]
 do
+  echo "Wait for container to be healthy..."
   (( COUNTER++));
   if (( COUNTER > THRESHOLD ))
   then
-    echo "" 2>
-    echo "Error: container seems to provision for longer than $THRESHOLD seconds." 2>
-    echo "Either check what takes so long or consider raising \$HEALTHCHECK_TIMEOUT." 2>
+    echo ""
+    echo "Error: container seems to provision for longer than $THRESHOLD seconds."
+    echo "Either check what takes so long or consider raising \$HEALTHCHECK_TIMEOUT."
     exit 1
   fi
   sleep 1
 done
 
-echo -n " container ready."
+echo "container ready."
