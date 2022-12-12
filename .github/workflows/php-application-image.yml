@@ -1,7 +1,7 @@
 name: PHP Application Image (all)
 on:
   schedule:
-    - cron: "0 10 * * *" # every day at 2am
+    - cron: "0 10 * * *" # every day at 10am
   workflow_dispatch:
 
 jobs:
