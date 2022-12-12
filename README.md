@@ -60,11 +60,11 @@ docker run -it --volume=/Users/john_doe/Documents/my_symfony_project:/var/www ph
 
 ## Available image tags
 
-| PHP Version | 7.0 :name_badge: | 7.1  :name_badge: | 7.2 :name_badge: | 7.3 :name_badge: | 7.4 :name_badge:  | 8.0_ :x: | 8.1 :white_check_mark: | __8.2__ :white_check_mark:               |
-|:------------|:-----------------|:------------------|:-----------------|:-----------------|:------------------|:---------|:-----------------------|:-----------------------------------------|
-| __cli__     | cli-7.0          | cli-7.1           | cli-7.2          | cli-7.3          | cli-7.4<br/>cli-7 | cli-8.0  | cli-8.1                | __cli-8.2<br/>cli-8<br/>cli__            |
-| __fpm__     | fpm-7.0          | fpm-7.1           | fpm-7.2          | fpm-7.3          | fpm-7.4<br/>fpm-7 | fpm-8.0  | fpm-8.1                | __fpm-8.2<br/>fpm-8<br/>fpm<br/>latest__ |
-| __dev__     | dev-7.1          | dev-7.1           | dev-7.2          | dev-7.3          | dev-7.4<br/>dev-7 | dev-8.0  | dev-8.1                | __dev-8.2<br/>dev-8<br/>dev__            |
+| PHP Version | 7.0 :name_badge:        | 7.1  :name_badge:       | 7.2 :name_badge:        | 7.3 :name_badge:        | 7.4 :name_badge:                                | 8.0_ :x:                | 8.1 :white_check_mark:  | __8.2__ :white_check_mark:                                              |
+|:------------|:------------------------|:------------------------|:------------------------|:------------------------|:------------------------------------------------|:------------------------|:------------------------|:------------------------------------------------------------------------|
+| __cli__     | cli-7.0                 | cli-7.1                 | cli-7.2                 | cli-7.3                 | cli-7.4<br/>cli-7                               | cli-8.0                 | cli-8.1                 | __cli-8.2<br/>cli-8<br/>cli__                                           |
+| __fpm__     | fpm-7.0                 | fpm-7.1                 | fpm-7.2                 | fpm-7.3                 | fpm-7.4<br/>fpm-7                               | fpm-8.0                 | fpm-8.1                 | __fpm-8.2<br/>fpm-8<br/>fpm<br/>latest__                                |
+| __fpm-dev__ | fpm-dev-7.1<br/>dev-7.1 | fpm-dev-7.1<br/>dev-7.1 | fpm-dev-7.2<br/>dev-7.2 | fpm-dev-7.4<br/>dev-7.3 | fpm-dev-7.4<br/>fpm-dev-7<br/>dev-7.4<br/>dev-7 | fpm-dev-8.0<br/>dev-8.0 | fpm-dev-8.1<br/>dev-8.1 | __fpm-dev-8.2<br/>fpm-dev-8<br/>fpm-dev<br/>dev-8.2<br/>dev-8<br/>dev__ |
 
 :name_badge:: DO NOT USE! This release is no longer maintained. These images are not part of our scheduled image update routine. Updates are executed irregularly using the "manual" action on Github. \
 :x::	A release that is supported for critical security issues only. You can use it, but make sure to update your application to a version with full support soon. \
