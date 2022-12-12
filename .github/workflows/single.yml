@@ -1,4 +1,4 @@
-name: PHP Application Image (single)
+name: Build single image
 on:
   workflow_dispatch:
     inputs:

@@ -1,4 +1,4 @@
-name: PHP Application Image (all)
+name: Build outdated images (scheduled)
 on:
   schedule:
     - cron: "0 10 * * 0" # every sunday at 10am
