@@ -11,10 +11,6 @@ jobs:
       matrix:
         include:
           - base: cli
-            php_version: 7.4
-            arches: linux/amd64,linux/arm64
-            tags: 'phpimageleague/php-application-server:cli-7.4,phpimageleague/php-application-server:cli-7'
-          - base: cli
             php_version: 8.0
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-8.0'
@@ -26,10 +22,6 @@ jobs:
             php_version: 8.2
             arches: linux/amd64,linux/arm64
             tags: 'phpimageleague/php-application-server:cli-8.2,phpimageleague/php-application-server:cli-8,phpimageleague/php-application-server:cli'
-          - base: fpm
-            php_version: 7.4
-            arches: linux/amd64,linux/arm64
-            tags: 'phpimageleague/php-application-server:fpm-7.4,phpimageleague/php-application-server:web-7.4'
           - base: fpm
             php_version: 8.0
             arches: linux/amd64,linux/arm64
