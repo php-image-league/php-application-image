@@ -60,6 +60,7 @@ jobs:
         name: Build docker image
         uses: docker/build-push-action@v3
         with:
+          context: .
           build-args: "PHP_VERSION=${{ github.event.inputs.php_version }}"
           platforms: ${{ github.event.inputs.architectures }}
           push: true
