@@ -1,0 +1,93 @@
+name: PHP Application Image (all)
+on:
+  schedule:
+    - cron: "0 10 * * 6" # every sunday at 10am
+  workflow_dispatch:
+
+jobs:
+  update-image:
+    continue-on-error: true
+    strategy:
+      matrix:
+        include:
+          - base: cli
+            php_version: 7.0
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:cli-7.0'
+          - base: cli
+            php_version: 7.1
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:cli-7.1'
+          - base: cli
+            php_version: 7.2
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:cli-7.2'
+          - base: cli
+            php_version: 7.3
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:cli-7.3'
+          - base: cli
+            php_version: 7.4
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:cli-7.4,phpimageleague/php-application-server:cli-7'
+          - base: fpm
+            php_version: 7.0
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:fpm-7.0,phpimageleague/php-application-server:web-7.0'
+          - base: fpm
+            php_version: 7.1
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:fpm-7.1,phpimageleague/php-application-server:web-7.1'
+          - base: fpm
+            php_version: 7.2
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:fpm-7.2,phpimageleague/php-application-server:web-7.2'
+          - base: fpm
+            php_version: 7.3
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:fpm-7.3,phpimageleague/php-application-server:web-7.3'
+          - base: fpm
+            php_version: 7.4
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:fpm-7.4,phpimageleague/php-application-server:web-7.4,phpimageleague/php-application-server:fpm-7,phpimageleague/php-application-server:web-7'
+          - base: swoole
+            php_version: 7.4
+            arches: linux/amd64,linux/arm64
+            tags: 'phpimageleague/php-application-server:swoole-7.4,phpimageleague/php-application-server:swoole-7.4,phpimageleague/php-application-server:swoole-7,phpimageleague/php-application-server:swoole-7'
+          # todo build dev tag with older version of xdebug (xdebug currently requires php >= 8)
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Checkout the code
+        uses: actions/checkout@v3
+        with:
+          ref: 'main'
+      -
+        name: Pre process Dockerfile
+        env:
+          PHP_VERSION: ${{ matrix.php_version }}
+          BASE: ${{ matrix.base }}
+        run: ./preprocessor "$BASE.Dockerfile" > Dockerfile
+      -
+        name: Build docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          build-args: "PHP_VERSION=${{ matrix.php_version }}"
+          platforms: ${{ matrix.arches }}
+          tags: ${{ matrix.tags }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
