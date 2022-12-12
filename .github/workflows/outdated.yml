@@ -1,7 +1,7 @@
 name: Build outdated images (scheduled)
 on:
   schedule:
-    - cron: "0 10 * * 0" # every sunday at 10am
+    - cron: "0 10 1 * *" # 1st day of every month at 10am
   workflow_dispatch:
 
 jobs:

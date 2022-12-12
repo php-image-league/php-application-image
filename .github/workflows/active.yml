@@ -1,7 +1,7 @@
 name: Build active images (scheduled)
 on:
   schedule:
-    - cron: "0 10 * * *" # every day at 10am
+    - cron: "0 10 * * 0" # every sunday at 10am
   workflow_dispatch:
 
 jobs:
