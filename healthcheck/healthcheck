@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -f "/status/provisioning" ]
+if [ -f "~/provisioning" ]
 then
   echo "Container is still provisioning itself."
   exit 1

@@ -2,7 +2,7 @@
 
 set -m # enable background processes
 
-touch /status/provisioning
+touch ~/provisioning
 
 # start all services, but keep them in background
 supervisord -c "$SUPERVISORD_CONFIG" &
@@ -12,6 +12,6 @@ do
   bash "$f" -H || break
 done
 
-rm /status/provisioning
+rm ~/provisioning
 
 fg %1
