@@ -13,7 +13,7 @@ COPY php/swoole/virtual_host.conf $NGINX_VHOST_PATH
 # todo use env var for paths
 RUN sed -i 's/user nginx;/user www-data;/' "$NGINX_CONFIG"
 
-RUN chown www-data:www-data /status
+RUN mkdir /status && chown www-data:www-data /status
 
 INCLUDE setup/Dockerfile
 
